@@ -17,10 +17,22 @@ class Enemy {
             this.x = 1;
             this.y = (Math.floor(Math.random() * 3) + 1) * BLOCK_HEIGHT;
         };
+
+        return this.handleCollision();
     }
 
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+
+    handleCollision() {
+        if (this.x < player.x + BLOCK_WIDTH  && this.x + BLOCK_WIDTH  > player.x &&
+            this.y < player.y + BLOCK_HEIGHT && this.y + BLOCK_HEIGHT > player.y) {
+
+            console.log('Touched');
+
+            return player.reset();
+        }
     }
 }
 
@@ -52,29 +64,29 @@ class Player {
     }
 
     handleInput(key) {
-        var xAsis = this.x;
-        var yAsis = this.y;
+        let xAxis = this.x;
+        let yAxis = this.y;
 
         switch (key) {
             case 'left':
-                xAsis -= BLOCK_WIDTH;
+                xAxis -= BLOCK_WIDTH;
 
                 break;
             case 'right':
-                xAsis += BLOCK_WIDTH;
+                xAxis += BLOCK_WIDTH;
 
                 break;
             case 'up':
-                yAsis -= BLOCK_HEIGHT;
+                yAxis -= BLOCK_HEIGHT;
 
                 break;
             case 'down':
-                yAsis += BLOCK_HEIGHT;
+                yAxis += BLOCK_HEIGHT;
 
                 break;
         }
 
-        this.update(xAsis, yAsis);
+        this.update(xAxis, yAxis);
     }
 
     reset() {
@@ -87,15 +99,11 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [];
-var enemy = new Enemy();
-allEnemies.push(enemy);
-var enemy = new Enemy();
-allEnemies.push(enemy);
-var enemy = new Enemy();
-allEnemies.push(enemy);
-var enemy = new Enemy();
-allEnemies.push(enemy);
+var allEnemies = [
+    new Enemy(),
+    new Enemy(),
+    new Enemy()
+]
 
 var player = new Player();
 
