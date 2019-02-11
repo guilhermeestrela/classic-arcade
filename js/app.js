@@ -1,69 +1,99 @@
+const BLOCK_WIDTH = 101;
+const BLOCK_HEIGHT = 83;
+
 // Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+class Enemy {
+    constructor(){
+        this.sprite = 'images/enemy-bug.png';
+        this.x = 1;
+        this.y = (Math.floor(Math.random() * 3) + 1) * BLOCK_HEIGHT;
+        this.speed = (Math.floor((Math.random() * 5) + 1)  / 2);
+    }
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-    this.x = 0;
-    this.y = 83;
-};
+    update(dt) {
+        this.x += ((this.x + BLOCK_WIDTH) * dt) + this.speed;
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-};
+        if (this.x > ctx.canvas.width) {
+            this.x = 1;
+            this.y = (Math.floor(Math.random() * 3) + 1) * BLOCK_HEIGHT;
+        };
+    }
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+}
 
 /**
- * Class: Player
+ * Class Player
  *
- * @constructor
  */
-var Player = function() {
-    this.sprite = 'images/char-boy.png';
-    this.x = 202;
-    this.y = 332;
-};
+class Player {
+    constructor(x = 202, y = 332) {
+        this.sprite = 'images/char-boy.png';
+        this.x = x;
+        this.y = y;
+    }
 
-/**
- * Update Player position
- *
- * @param dt
- */
-Player.prototype.update = function(dt) {
 
-};
+    update(x, y) {
+        if (typeof x !== 'undefined' && typeof y !== 'undefined') {
+            if (x < 0 || x === ctx.canvas.width) return;
 
-/**
- * Render Player method
- */
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+            if (this.y === 0 || this.y >= (ctx.canvas.height - BLOCK_HEIGHT)) return this.reset();
 
-/**
- * Handle input to change Player position
- *
- * @param key
- */
-Player.prototype.handleInput = function(key) {
-    console.log('Key', key);
-};
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+
+    handleInput(key) {
+        var xAsis = this.x;
+        var yAsis = this.y;
+
+        switch (key) {
+            case 'left':
+                xAsis -= BLOCK_WIDTH;
+
+                break;
+            case 'right':
+                xAsis += BLOCK_WIDTH;
+
+                break;
+            case 'up':
+                yAsis -= BLOCK_HEIGHT;
+
+                break;
+            case 'down':
+                yAsis += BLOCK_HEIGHT;
+
+                break;
+        }
+
+        this.update(xAsis, yAsis);
+    }
+
+    reset() {
+        this.x = 202;
+        this.y = 332;
+    }
+}
 
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
+var enemy = new Enemy();
+allEnemies.push(enemy);
+var enemy = new Enemy();
+allEnemies.push(enemy);
+var enemy = new Enemy();
+allEnemies.push(enemy);
 var enemy = new Enemy();
 allEnemies.push(enemy);
 
