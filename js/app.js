@@ -1,7 +1,11 @@
 const BLOCK_WIDTH = 101;
 const BLOCK_HEIGHT = 83;
 
-// Enemies our player must avoid
+/**
+ * Class: Enemy
+ *
+ * Enemies we should avoid
+ */
 class Enemy {
     constructor(){
         this.sprite = 'images/enemy-bug.png';
@@ -39,6 +43,7 @@ class Enemy {
 /**
  * Class Player
  *
+ * Our Hero
  */
 class Player {
     constructor(x = 202, y = 332) {
@@ -47,7 +52,13 @@ class Player {
         this.y = y;
     }
 
-
+    /**
+     * @method update
+     * @param x
+     * @param y
+     *
+     * Update Players position and check the limits
+     */
     update(x, y) {
         if (typeof x !== 'undefined' && typeof y !== 'undefined') {
             if (x < 0 || x === ctx.canvas.width) return;
@@ -89,6 +100,12 @@ class Player {
         this.update(xAxis, yAxis);
     }
 
+    updateChar(sprite) {
+        this.sprite = sprite;
+
+        return this.reset();
+    }
+
     reset() {
         this.x = 202;
         this.y = 332;
@@ -121,3 +138,11 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+document.querySelectorAll('.character-types li').forEach((type) => {
+    type.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        player.updateChar(this.querySelector('img').attributes.src.value);
+    });
+})
