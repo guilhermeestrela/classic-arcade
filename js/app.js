@@ -14,6 +14,12 @@ class Enemy {
         this.speed = (Math.floor((Math.random() * 5) + 1)  / 2);
     }
 
+    /**
+     * Update enemy position
+     *
+     * @param dt
+     * @returns {*}
+     */
     update(dt) {
         this.x += ((this.x + BLOCK_WIDTH) * dt) + this.speed;
 
@@ -25,15 +31,19 @@ class Enemy {
         return this.handleCollision();
     }
 
+    /**
+     * Render enemy on the screen
+     */
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
+    /**
+     * Handle enemy collision with player.
+     */
     handleCollision() {
         if (this.x < player.x + BLOCK_WIDTH  && this.x + BLOCK_WIDTH  > player.x &&
             this.y < player.y + BLOCK_HEIGHT && this.y + BLOCK_HEIGHT > player.y) {
-
-            console.log('Touched');
 
             return player.reset();
         }
@@ -57,7 +67,7 @@ class Player {
      * @param x
      * @param y
      *
-     * Update Players position and check the limits
+     * Update Player position and check the limits
      */
     update(x, y) {
         if (typeof x !== 'undefined' && typeof y !== 'undefined') {
@@ -70,9 +80,17 @@ class Player {
         }
     }
 
+    /**
+     * Render our player on the screen
+     */
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
+
+    /**
+     * Move our player on the screen
+     * @param key
+     */
 
     handleInput(key) {
         let xAxis = this.x;
@@ -100,22 +118,25 @@ class Player {
         this.update(xAxis, yAxis);
     }
 
+    /**
+     * Change our player style
+     * @param sprite
+     */
     updateChar(sprite) {
         this.sprite = sprite;
 
         return this.reset();
     }
 
+    /**
+     * Reset player to initial position
+     */
     reset() {
         this.x = 202;
         this.y = 332;
     }
 }
 
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
 var allEnemies = [
     new Enemy(),
     new Enemy(),
